@@ -11,15 +11,18 @@ on:
 
 jobs:  
   deploy:    
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
+    # runs-on: ubuntu-latest (CT)
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [20.x]
+        # node-version: [14.x, 16.x, 18.x] (CT)
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3    
+    - uses: actions/checkout@v4 
+    # - uses: actions/checkout@v3 (CT)    
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -27,7 +30,8 @@ jobs:
         cache: 'npm' 
     - run: npm install --package-lock-only
     - run: npm ci
-    - run: npm run build --if-present
+    - run: npm run build
+    # - run: npm run build --if-present (CT)
     - run: npm test    
     - uses: jakejarvis/s3-sync-action@master
       with:
